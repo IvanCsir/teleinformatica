@@ -77,5 +77,5 @@ class Net:
         for i in self.net.switches:
             i.start([])
 
-    def config():
+    def config(self):
         info('* Post configure switches and hosts\n')
