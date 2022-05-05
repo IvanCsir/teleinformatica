@@ -52,4 +52,30 @@ class Net:
             self.net.addHost(name, cls=Host, ip = ip_completa, defaultRoute=None)
 
     def add_links(self):
-        pass
+        redes = self.ip_redes()
+        for i in range(self.num_redes):
+            switch_wan = self.net.get("s" + str(i + 1) + '_wan')
+            router = self.net.get("r" + str(i + 1))
+            switch_lan = self.net.get("s" + str(i + 1) + '_lan')
+            hosts = self.net.get("h" + str(i+1))
+
+
+            self.net.addLink(self.r_central, switch_wan)
+            self.net.addLink(switch_wan,router)
+            self.net.addLink(router, switch_lan)
+            self.net.addLink(switch_lan,hosts)
+
+    def crear_red(self):
+        info('* Starting network\n')
+        self.net.build()
+
+        info( ' Starting controllers\n')
+        for controller in self.net.controllers:
+            controller.start()
+
+        info( ' Starting switches\n')
+        for i in self.net.switches:
+            i.start([])
+
+    def config():
+        info('* Post configure switches and hosts\n')
